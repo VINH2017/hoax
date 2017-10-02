@@ -13,11 +13,20 @@ class ReportController extends Resource
 
     public function reports(String $url)
     {
+        if ($this->endsWith($url, '/')) {
+            $url = substr($url, 0, -1);
+        }
         $count = Report::where('url', urldecode($url))->count();
         return [
             'count' => $count,
             'blocked' => $count >= 10
         ];
+    }
+
+    private function endsWith($haystack, $needle)
+    {
+        // search forward starting from end minus needle length characters
+        return $needle === "" || (($temp = strlen($haystack) - strlen($needle)) >= 0 && strpos($haystack, $needle, $temp) !== false);
     }
 
     /**
