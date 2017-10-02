@@ -48,6 +48,14 @@ class ReportController extends Resource
         $this->response->errorForbidden();
     }
 
+    public function beforeStore(Request $request, Model $model)
+    {
+        $url = $model->url;
+        if ($this->endsWith($url, '/')) {
+            $model->url = substr($url, 0, -1);
+        }
+    }
+
     public function beforeShow(Request $request, Model $model)
     {
         $this->response->errorForbidden();
