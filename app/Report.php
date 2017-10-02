@@ -16,10 +16,12 @@ class Report extends Model
      */
     protected $fillable = [
         'url',
+        'reason',
     ];
 
     public $validation = [
         'url' => ['required'],
+        'reason' => ['required'],
     ];
 
     /**
