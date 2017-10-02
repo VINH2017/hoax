@@ -3,7 +3,9 @@
 namespace App;
 
 
+use App\Transformers\ReportTransformer;
 use Illuminate\Database\Eloquent\Model;
+use League\Fractal\TransformerAbstract;
 
 class Report extends Model
 {
@@ -15,4 +17,18 @@ class Report extends Model
     protected $fillable = [
         'url',
     ];
+
+    public $validation = [
+        'url' => ['required'],
+    ];
+
+    /**
+     * Get the transformer for the model.
+     *
+     * @return TransformerAbstract
+     */
+    function transformer(): TransformerAbstract
+    {
+        return new ReportTransformer();
+    }
 }
