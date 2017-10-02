@@ -14,14 +14,17 @@ class ReportController extends Resource
     public function reports(String $url)
     {
         $decoded = urldecode($url);
-        if ($this->endsWith($decoded, '/')) {
-            $decoded = substr($decoded, 0, -1);
+        if (filter_var($decoded, FILTER_VALIDATE_URL)) {
+            if ($this->endsWith($decoded, '/')) {
+                $decoded = substr($decoded, 0, -1);
+            }
+            $count = Report::where('url', $decoded)->count();
+            return [
+                'count' => $count,
+                'blocked' => $count >= 10
+            ];
         }
-        $count = Report::where('url', $decoded)->count();
-        return [
-            'count' => $count,
-            'blocked' => $count >= 10
-        ];
+        $this->response->errorBadRequest();
     }
 
     private function endsWith($haystack, $needle)
