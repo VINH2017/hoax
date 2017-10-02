@@ -13,10 +13,11 @@ class ReportController extends Resource
 
     public function reports(String $url)
     {
-        if ($this->endsWith($url, '/')) {
-            $url = substr($url, 0, -1);
+        $decoded = urldecode($url);
+        if ($this->endsWith($decoded, '/')) {
+            $decoded = substr($decoded, 0, -1);
         }
-        $count = Report::where('url', urldecode($url))->count();
+        $count = Report::where('url', $decoded)->count();
         return [
             'count' => $count,
             'blocked' => $count >= 10
