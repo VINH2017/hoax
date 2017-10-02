@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\ReportController;
+use Dingo\Api\Routing\Router;
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -13,4 +16,10 @@
 
 $router->get('/', function () use ($router) {
     return $router->app->version();
+});
+
+$api = app(Router::class);
+
+$api->version('v1', function ($api) {
+    $api->get('reports/{url}', ReportController::class . '@reports');
 });
