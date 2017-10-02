@@ -15,4 +15,18 @@ class Report extends Model
     protected $fillable = [
         'url',
     ];
+
+    public $validation = [
+        'url' => ['required'],
+    ];
+
+    /**
+     * Get the transformer for the model.
+     *
+     * @return TransformerAbstract
+     */
+    function transformer(): TransformerAbstract
+    {
+        return new ReportTransformer();
+    }
 }

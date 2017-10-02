@@ -21,5 +21,6 @@ $router->get('/', function () use ($router) {
 $api = app(Router::class);
 
 $api->version('v1', function ($api) {
-    $api->get('reports/{url}', ReportController::class . '@reports');
+    $api->get('count/{url}', ReportController::class . '@reports');
+    $api->resource('reports', ReportController::class);
 });

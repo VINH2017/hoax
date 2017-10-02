@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Report;
 use Dingo\Api\Routing\Helpers;
-use Laravel\Lumen\Routing\Controller as BaseController;
+use Illuminate\Database\Eloquent\Model;
 
-class ReportController extends BaseController
+class ReportController extends Resource
 {
     use Helpers;
 
@@ -14,5 +14,15 @@ class ReportController extends BaseController
     {
         $count = Report::where('url', urldecode($url))->count();
         return $count;
+    }
+
+    /**
+     * Eloquent model.
+     *
+     * @return Model
+     */
+    protected function model(): Model
+    {
+        return new Report();
     }
 }
