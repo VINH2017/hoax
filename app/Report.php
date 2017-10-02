@@ -3,9 +3,9 @@
 namespace App;
 
 
+use App\Transformers\ReportTransformer;
 use Illuminate\Database\Eloquent\Model;
 use League\Fractal\TransformerAbstract;
-use ReportTransformer;
 
 class Report extends Model
 {
