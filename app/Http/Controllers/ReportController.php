@@ -13,7 +13,7 @@ class ReportController extends Resource
     public function reports(String $url)
     {
         $count = Report::where('url', urldecode($url))->count();
-        return $count;
+        return ['count' => $count];
     }
 
     /**
