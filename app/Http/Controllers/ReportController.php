@@ -12,7 +12,7 @@ class ReportController extends BaseController
 
     public function reports(String $url)
     {
-        $count = Report::where('url', $url)->count();
+        $count = Report::where('url', urldecode($url))->count();
         return $count;
     }
 }
