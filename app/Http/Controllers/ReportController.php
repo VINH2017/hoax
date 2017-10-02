@@ -14,8 +14,8 @@ class ReportController extends Resource
     public function reports(String $url)
     {
         $decoded = urldecode($url);
-        if ($this->endsWith($decoded, '\/')) {
-            $url = substr($decoded, 0, -1);
+        if ($this->endsWith($decoded, '/')) {
+            $decoded = substr($decoded, 0, -1);
         }
         $count = Report::where('url', $decoded)->count();
         return [
