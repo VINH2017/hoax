@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Flag;
 use App\Report;
 use Dingo\Api\Routing\Helpers;
+use http\Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
@@ -19,8 +21,10 @@ class ReportController extends Resource
                 $decoded = substr($decoded, 0, -1);
             }
             $count = Report::where('url', $decoded)->count();
+            $flagged = Flag::where('url', $decoded)->count() > 0 ? Flag::where('url', $decoded)->get()->flagged : false;
             return [
                 'count' => $count,
+                'flagged' => $flagged,
                 'blocked' => $count >= 10
             ];
         }
