@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateReportsTable extends Migration
+class CreateFlagsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateReportsTable extends Migration
      */
     public function up()
     {
-        Schema::create('reports', function (Blueprint $table) {
+        Schema::create('flags', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('url');
-            $table->string('reason');
+            $table->integer('flagged_by');
+            $table->string('url')->unique();
+            $table->boolean('flagged')->default(1);
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class CreateReportsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('reports');
+        Schema::dropIfExists('flags');
     }
 }

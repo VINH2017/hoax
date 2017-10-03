@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Flag;
 use App\Report;
 use Dingo\Api\Routing\Helpers;
+use http\Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
@@ -14,14 +16,19 @@ class ReportController extends Resource
     public function reports(String $url)
     {
         $decoded = urldecode($url);
-        if ($this->endsWith($decoded, '/')) {
-            $decoded = substr($decoded, 0, -1);
+        if (filter_var($decoded, FILTER_VALIDATE_URL)) {
+            if ($this->endsWith($decoded, '/')) {
+                $decoded = substr($decoded, 0, -1);
+            }
+            $count = Report::where('url', $decoded)->count();
+            $flagged = Flag::where('url', $decoded)->count() > 0 ? Flag::where('url', $decoded)->get()->flagged : false;
+            return [
+                'count' => $count,
+                'flagged' => $flagged,
+                'blocked' => $count >= 10
+            ];
         }
-        $count = Report::where('url', $decoded)->count();
-        return [
-            'count' => $count,
-            'blocked' => $count >= 10
-        ];
+        $this->response->errorBadRequest();
     }
 
     private function endsWith($haystack, $needle)
@@ -43,6 +50,14 @@ class ReportController extends Resource
     public function index()
     {
         $this->response->errorForbidden();
+    }
+
+    public function beforeStore(Request $request, Model $model)
+    {
+        $url = $model->url;
+        if ($this->endsWith($url, '/')) {
+            $model->url = substr($url, 0, -1);
+        }
     }
 
     public function beforeShow(Request $request, Model $model)

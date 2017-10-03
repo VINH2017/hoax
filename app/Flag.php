@@ -3,25 +3,20 @@
 namespace App;
 
 
-use App\Transformers\ReportTransformer;
+use App\Transformers\FlagTransformer;
 use Illuminate\Database\Eloquent\Model;
 use League\Fractal\TransformerAbstract;
 
-class Report extends Model
+class Flag extends Model
 {
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'url',
-        'reason',
+        'flagged',
     ];
 
     public $validation = [
+        'flagged_by' => ['required'],
         'url' => ['required'],
-        'reason' => ['required'],
     ];
 
     /**
@@ -31,6 +26,6 @@ class Report extends Model
      */
     function transformer(): TransformerAbstract
     {
-        return new ReportTransformer();
+        return new FlagTransformer();
     }
 }

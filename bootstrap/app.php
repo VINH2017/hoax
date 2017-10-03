@@ -63,9 +63,11 @@ $app->singleton(
 //    App\Http\Middleware\ExampleMiddleware::class
 // ]);
 
-// $app->routeMiddleware([
-//     'auth' => App\Http\Middleware\Authenticate::class,
-// ]);
+$app->routeMiddleware([
+    //'auth' => App\Http\Middleware\Authenticate::class,
+    'jwt.auth' => 'Tymon\JWTAuth\Middleware\GetUserFromToken',
+    'jwt.refresh' => 'Tymon\JWTAuth\Middleware\RefreshToken',
+]);
 
 /*
 |--------------------------------------------------------------------------
@@ -78,9 +80,10 @@ $app->singleton(
 |
 */
 
+$app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 $app->register(Dingo\Api\Provider\LumenServiceProvider::class);
 // $app->register(App\Providers\AppServiceProvider::class);
-// $app->register(App\Providers\AuthServiceProvider::class);
+$app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 
 /*
